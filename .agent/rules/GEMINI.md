@@ -10,20 +10,19 @@ trigger: always_on
 
 ## CRITICAL: AGENT & SKILL PROTOCOL (START HERE)
 
-> **MANDATORY:** You MUST read the appropriate agent file and its skills BEFORE performing any implementation. This is the highest priority rule.
+> **MANDATORY:** You MUST read the appropriate agent file and its skills BEFORE performing any implementation.
 
 ### 1. Modular Skill Loading Protocol
 
 Agent activated → Check frontmatter "skills:" → Read SKILL.md (INDEX) → Read specific sections.
 
-- **Selective Reading:** DO NOT read ALL files in a skill folder. Read `SKILL.md` first, then only read sections matching the user's request.
-- **Rule Priority:** P0 (GEMINI.md) > P1 (Agent .md) > P2 (SKILL.md). All rules are binding.
+- **Selective Reading:** DO NOT read ALL files. Read `SKILL.md` first, then only sections matching the request.
+- **Rule Priority:** P0 (GEMINI.md) > P1 (Agent .md) > P2 (SKILL.md).
 
 ### 2. Enforcement Protocol
 
-1. **When agent is activated:**
-   - ✅ Activate: Read Rules → Check Frontmatter → Load SKILL.md → Apply All.
-2. **Forbidden:** Never skip reading agent rules or skill instructions. "Read → Understand → Apply" is mandatory.
+1. **Activate**: Read Rules → Check Frontmatter → Load SKILL.md → Apply All.
+2. **Forbidden**: Never skip reading instructions. "Read → Understand → Apply" is mandatory.
 
 ---
 
@@ -44,18 +43,23 @@ Agent activated → Check frontmatter "skills:" → Read SKILL.md (INDEX) → Re
 
 ## 🤖 INTELLIGENT AGENT ROUTING (STEP 2 - AUTO)
 
-**ALWAYS ACTIVE: Before responding to ANY request, automatically analyze and select the best agent(s).**
+**ALWAYS ACTIVE: Automatically analyze and select the best agent(s).**
 
-> 🔴 **MANDATORY:** You MUST follow the protocol defined in `@[skills/intelligent-routing]`.
+> 🔴 **MANDATORY:** You MUST follow `@[skills/intelligent-routing]`.
 
-### Auto-Selection Protocol
+1. **Analyze (Silent)**: Detect domains (Frontend, Backend, Security).
+2. **Select Agent(s)**: Choose specialist(s).
+3. **Inform User**: Concisely state: `🤖 **Applying knowledge of @[agent-name]...**`
+4. **Apply**: Generate response using agent persona.
 
-1. **Analyze (Silent)**: Detect domains (Frontend, Backend, Security, etc.) from user request.
-2. **Select Agent(s)**: Choose the most appropriate specialist(s).
-3. **Inform User**: Concisely state which expertise is being applied.
-4. **Apply**: Generate response using the selected agent's persona and rules.
+### ⚠️ ROUTING CHECKLIST (MANDATORY BEFORE CODE/DESIGN)
 
-### Response Format (MANDATORY)
+| Check                             | If Unchecked                            |
+| :-------------------------------- | :-------------------------------------- |
+| 1. Identify correct agent?        | → STOP. Analyze domain.                 |
+| 2. Read agent's `.md` file?       | → STOP. Open `.agent/agents/{agent}.md` |
+| 3. Announce `Applying knowledge`? | → STOP. Add announcement.               |
+| 4. Load required skills?          | → STOP. Check `skills:` & read.         |
 
 When auto-applying an agent, inform the user:
 
@@ -97,46 +101,37 @@ When auto-applying an agent, inform the user:
 
 ### 🧠 Memory Bank Protocol (Global Mandatory)
 
-**The Memory Bank (`.agent/memory-bank/`) is the source of truth for project context.**
+**The Memory Bank (`.agent/memory-bank/`) is the source of truth.**
 
-1.  **Read First**: At the start of ANY complex task (approx >3 tool calls), you MUST read `activeContext.md` and `projectContext.md`.
-2.  **Update Last**: Before finishing a session, you MUST update `activeContext.md` with your progress and next steps.
-3.  **Maintain**: If you discover new patterns or change architecture, update `systemPatterns.md`.
+1.  **Read First**: At start of complex task (>3 tool calls), READ `activeContext.md` & `projectContext.md`.
+2.  **Update Last**: Before finishing, UPDATE `activeContext.md` with progress & next steps.
+3.  **Maintain**: If patterns change, UPDATE `systemPatterns.md`.
 
 ### 🌐 Language Handling
 
-When user's prompt is NOT in English:
-
-1. **Internally translate** for better comprehension
-2. **Respond in user's language** - match their communication
-3. **Code comments/variables** remain in English
+1. **Internally translate** to English.
+2. **Respond in user's language**.
+3. **Code comments/variables** in English.
 
 ### 🧹 Clean Code (Global Mandatory)
 
-**ALL code MUST follow `@[skills/clean-code]` rules. No exceptions.**
+**ALL code MUST follow `@[skills/clean-code]`.**
 
-- **Code**: Concise, direct, no over-engineering. Self-documenting.
-- **Testing**: Mandatory. Pyramid (Unit > Int > E2E) + AAA Pattern.
-- **Performance**: Measure first. Adhere to 2025 standards (Core Web Vitals).
-- **Infra/Safety**: 5-Phase Deployment. Verify secrets security.
+- **Code**: Concise, direct, self-documenting.
+- **Testing**: Mandatory. Pyramid (Unit > Int > E2E).
+- **Performance**: Measure first. Core Web Vitals.
+- **Infra/Safety**: 5-Phase Deployment. No secrets.
 
 ### 📁 File Dependency Awareness
 
-**Before modifying ANY file:**
-
-1. Check `CODEBASE.md` → File Dependencies
-2. Identify dependent files
-3. Update ALL affected files together
+1. Check `CODEBASE.md` → File Dependencies.
+2. Identify & update ALL affected files.
 
 ### 🗺️ System Map Read
 
-> 🔴 **MANDATORY:** Read `ARCHITECTURE.md` at session start to understand Agents, Skills, and Scripts.
+> 🔴 **MANDATORY:** Read `ARCHITECTURE.md` at session start.
 
-**Path Awareness:**
-
-- Agents: `.agent/` (Project)
-- Skills: `.agent/skills/` (Project)
-- Runtime Scripts: `.agent/skills/<skill>/scripts/`
+**Path Awareness:** Agents: `.agent/`, Skills: `.agent/skills/`.
 
 ### 🧠 Read → Understand → Apply
 
@@ -163,15 +158,11 @@ When user's prompt is NOT in English:
 | **WEB** (Next.js, React web)           | `frontend-specialist` | frontend-design               |
 | **BACKEND** (API, server, DB)          | `backend-specialist`  | api-patterns, database-design |
 
-> 🔴 **Mobile + frontend-specialist = WRONG.** Mobile = mobile-developer ONLY.
-
-### 🛑 Socratic Gate
-
-**For complex requests, STOP and ASK first:**
+> 🔴 **Mobile** = mobile-developer ONLY.
 
 ### 🛑 GLOBAL SOCRATIC GATE (TIER 0)
 
-**MANDATORY: Every user request must pass through the Socratic Gate before ANY tool use or implementation.**
+**MANDATORY: Pass Socratic Gate before ANY tool use.**
 
 | Request Type            | Strategy       | Required Action                                                   |
 | ----------------------- | -------------- | ----------------------------------------------------------------- |
@@ -199,12 +190,10 @@ When user's prompt is NOT in English:
 
 **Priority Execution Order:**
 
-1. **Security** → 2. **Lint** → 3. **Schema** → 4. **Tests** → 5. **UX** → 6. **Seo** → 7. **Lighthouse/E2E**
+**Order:** Security → Lint → Schema → Tests → UX → Seo → Lighthouse.
+**Rule:** Task NOT finished until `checklist.py` succeeds.
 
-**Rules:**
-
-- **Completion:** A task is NOT finished until `checklist.py` returns success.
-- **Reporting:** If it fails, fix the **Critical** blockers first (Security/Lint).
+**Available Scripts**:
 
 **Available Scripts (12 total):**
 
@@ -266,10 +255,7 @@ When user's prompt is NOT in English:
 
 ## 📁 QUICK REFERENCE
 
-### Agents & Skills
-
-- **Masters**: `orchestrator`, `project-planner`, `security-auditor` (Cyber/Audit), `backend-specialist` (API/DB), `frontend-specialist` (UI/UX), `mobile-developer`, `debugger`, `game-developer`
-- **Key Skills**: `clean-code`, `brainstorming`, `app-builder`, `frontend-design`, `mobile-design`, `plan-writing`, `behavioral-modes`
+> See `ARCHITECTURE.md` for full agent/skill lists.
 
 ### Key Scripts
 
